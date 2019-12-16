@@ -3,7 +3,12 @@ const express = require('express');
 const Product = require('../models/product');
 
 const router = express.Router()
-
+const passport = require('passport')
+const customErrors = require('../../lib/custom_errors')
+const handle404 = customErrors.handle404
+const requireOwnership = customErrors.requireOwnership
+const removeBlanks = require('../../lib/remove_blank_fields')
+const requireToken = passport.authenticate('bearer', { session: false })
 
 /**
  * Action:      INDEX
@@ -34,7 +39,7 @@ router.get('/api/products', (req, res) => {
     Product.findById(req.params.id)
       .then(function(product) {
         if(product) {
-          res.status(200).json({ article: article });
+          res.status(200).json({ product: product });
         } else {
           // If we couldn't find a document with the matching ID
           res.status(404).json({
@@ -57,10 +62,10 @@ router.get('/api/products', (req, res) => {
    * URI:         /api/products
    * Description: Create a new product
   */
-  router.post('/api/products', (req, res) => {
+  router.post('/api/products', requireToken, (req, res) => {
     Product.create(req.body.product)
     // On a successful `create` action, respond with 201
-    // HTTP status and the content of the new article.
+    // HTTP status and the content of the new product.
     .then((newProduct) => {
       res.status(201).json({ product: newProduct });
     })
@@ -108,7 +113,7 @@ router.get('/api/products', (req, res) => {
   * URI:          /api/products/5d664b8b68b4f5092aba18e9
   * Description: Delete An Product by Product ID
    */
-  router.delete('/api/product/:id', (req, res) => {
+  router.delete('/api/products/:id', (req, res) => {
     Product.findById(req.params.id)
       .then((product) => {
         if(product) {
