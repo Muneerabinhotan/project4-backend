@@ -19,7 +19,7 @@ const requireToken = passport.authenticate('bearer', { session: false })
  */
 
 router.get('/api/orders', (req, res) => {
-    Order.find()
+    Order.find().populate("products","user")
     // Return all Orders as an Array
     .then((orders) => {
       res.status(200).json({ orders: orders });
