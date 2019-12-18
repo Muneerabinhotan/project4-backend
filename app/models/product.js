@@ -15,9 +15,9 @@ const productSchema = new mongoose.Schema({
     type: Number, default: 0
   },
   
-  // image:{
-  //     type:  
-  //   },
+  image:{
+     type: String     
+    },
 
   user: {
     type: mongoose.Schema.Types.ObjectId,

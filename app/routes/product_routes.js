@@ -71,6 +71,7 @@ router.get('/api/products', (req, res) => {
     })
     // Catch any errors that might occur
     .catch((error) => {
+      console.log('hi')
       res.status(500).json({ error: error });
     });
   });
