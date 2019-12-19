@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+// NO NEED FOR THIS MODEL
 const  productOrderSchema = new mongoose.Schema({
     
   product: {
